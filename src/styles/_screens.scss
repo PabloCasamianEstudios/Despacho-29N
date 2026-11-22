@@ -102,12 +102,12 @@
 }
 
 #np-body { text-align: left; margin-bottom: 18px; }
-.np-lead { font: 700 30px/1.1 $f; margin: 6px 0 4px; }
-.np-h { font: bold 19px/1.2 $f; margin: 12px 0 2px; }
-.np-k { font: 600 11px $f; letter-spacing: 2px; color: #7a2a1d; }
+.np-lead { font: 700 ts(30px)/1.1 $f; margin: 6px 0 4px; }
+.np-h { font: bold ts(19px)/1.2 $f; margin: 12px 0 2px; }
+.np-k { font: 600 ts(11px) $f; letter-spacing: 2px; color: #7a2a1d; }
 
 .np-small {
-  font: 13px/1.5 $f;
+  font: ts(13px)/1.5 $f;
   color: #4a4239;
   border-top: 1px solid #b7ad97;
   margin-top: 14px;

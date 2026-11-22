@@ -4,6 +4,7 @@ import { useFullscreen } from '../../hooks/useFullscreen';
 import { useGame } from '../../hooks/useGame';
 import { cx } from '../../game/util';
 import { IconClose } from '../Icons';
+import { SizeRange } from './TextSize';
 
 function Check({ id, checked, onChange, children }: { id: string; checked: boolean; onChange: (v: boolean) => void; children: string }) {
   return (
@@ -71,6 +72,10 @@ export function PauseMenu() {
           <Check id="opt-full" checked={full.on} onChange={full.set}>
             Pantalla completa
           </Check>
+          <div className="pause-size">
+            <span>Tamaño de letra</span>
+            <SizeRange label="Tamaño de letra" />
+          </div>
           <button className="big ghost" id="btn-tuto" onClick={() => game.replayTutorial()}>
             VER TUTORIAL
           </button>

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, type CSSProperties } from 'react';
 import { IconFullscreen } from './components/Icons';
 import { Desk } from './components/desk/Desk';
 import { Intro } from './components/overlays/Intro';
@@ -7,6 +7,7 @@ import { Tutorial } from './components/overlays/Tutorial';
 import { EndScreen } from './components/screens/EndScreen';
 import { NewspaperScreen } from './components/screens/NewspaperScreen';
 import { TitleScreen } from './components/screens/TitleScreen';
+import { widthScale } from './game/engine';
 import { sound } from './game/sound';
 import { useFullscreen } from './hooks/useFullscreen';
 import { useGame } from './hooks/useGame';
@@ -36,6 +37,7 @@ function FullscreenButton() {
 export default function App() {
   const scale = useStageFit();
   const screen = useGame((s) => s.screen);
+  const ts = useGame((s) => s.textScale);
   const wrapRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const deskRef = useRef<HTMLDivElement>(null);
@@ -44,7 +46,7 @@ export default function App() {
 
   return (
     <div id="wrap" ref={wrapRef}>
-      <div id="stage" ref={stageRef} style={{ transform: `scale(${scale})` }}>
+      <div id="stage" ref={stageRef} style={{ transform: `scale(${scale})`, '--ts': ts, '--tw': widthScale(ts) } as CSSProperties}>
         <Desk deskRef={deskRef} />
         <TitleScreen active={screen === 'title'} />
         <NewspaperScreen active={screen === 'paper'} />

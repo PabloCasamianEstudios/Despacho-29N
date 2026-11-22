@@ -17,6 +17,9 @@ $tag: #c47d2a;
 
 $glide: cubic-bezier(.25, .8, .3, 1);
 
+@function ts($px) { @return calc(#{$px} * var(--ts, 1)); }
+@function tw($px) { @return calc(#{$px} * var(--tw, 1)); }
+
 @mixin round-button {
   border: none;
   background: $button-dark;

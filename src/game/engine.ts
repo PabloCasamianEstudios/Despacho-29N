@@ -1,4 +1,4 @@
-import { DAYS, LUPA_HOME, PROPS_HOME, SHRED, STAGE_W, STAMP_HOME, ZONES } from './constants';
+import { DAYS, DESK_TOP, LUPA_HOME, PROPS_HOME, SHRED, STAGE_H, STAGE_W, STAMP_HOME, TEXT_SCALE, ZONES } from './constants';
 import { planWeek } from './plan';
 import { sound } from './sound';
 import { createStore } from './store';
@@ -115,6 +115,7 @@ export interface GameState {
   tutorial: Tutorial | null;
   pause: 'menu' | 'credits' | null;
   muted: boolean;
+  textScale: number;
   results: Result[];
   endRun: number;
 }
@@ -171,9 +172,31 @@ const initialState = (): GameState => ({
   tutorial: null,
   pause: null,
   muted: false,
+  textScale: loadTextScale(),
   results: [],
   endRun: 0,
 });
+
+const TEXT_KEY = 'despacho29n.letra';
+
+const defaultTextScale = () => {
+  const fit = Math.min(window.innerWidth / STAGE_W, window.innerHeight / STAGE_H);
+  return clamp(Number((Math.round(0.95 / fit / TEXT_SCALE.step) * TEXT_SCALE.step).toFixed(2)), TEXT_SCALE.min, TEXT_SCALE.max);
+};
+
+function loadTextScale() {
+  try {
+    const v = Number(localStorage.getItem(TEXT_KEY));
+    if (v >= TEXT_SCALE.min && v <= TEXT_SCALE.max) return v;
+  } catch {}
+  return defaultTextScale();
+}
+
+export const widthScale = (ts: number) => 1 + (ts - 1) * 0.75;
+
+const DESK_H = STAGE_H - DESK_TOP;
+const PAPER_W = 300;
+const NOTE_W = 236;
 
 const inZone = (p: Point, z: { x1: number; y1: number; x2: number; y2: number }) =>
   p.x >= z.x1 && p.x <= z.x2 && p.y >= z.y1 && p.y <= z.y2;
@@ -459,6 +482,28 @@ export class Game {
     this.animTimers.set(id, window.setTimeout(() => this.patchPaper(id, { anim: false }), 600));
   }
 
+  private paperSize(id: number) {
+    const el = this.els.get(id);
+    const k = widthScale(this.state.textScale);
+    return { w: el?.offsetWidth || PAPER_W * k, h: el?.offsetHeight || 360 };
+  }
+
+  private fitOnDesk(id: number, x: number, y: number) {
+    const { w, h } = this.paperSize(id);
+    return {
+      x: clamp(x, 240, Math.max(240, 1050 - w)),
+      y: clamp(y, 30, Math.max(30, DESK_H - h - 12)),
+    };
+  }
+
+  private placeNew(id: number, cx: number, y: number) {
+    requestAnimationFrame(() => {
+      const { w } = this.paperSize(id);
+      const p = this.fitOnDesk(id, cx - w / 2, y);
+      this.moveAnimated(id, p.x, p.y);
+    });
+  }
+
   nextDoc() {
     if (!this.queue.length) {
       this.updateBar();
@@ -473,14 +518,14 @@ export class Game {
         const it = job.item;
         const id = this.makePaper(it, { type: 'single', item: it });
         sound.play('slide');
-        this.moveAnimated(id, 470 + rand(-20, 20), 120 + rand(-15, 15));
+        this.placeNew(id, 620 + rand(-20, 20), 120 + rand(-15, 15));
         return;
       }
       const active: ActiveJob = { type: 'dossier', exp: job.exp, remaining: new Set() };
       const opts = shuffle(job.exp.opciones);
       const n = opts.length;
       const span = 760;
-      const w = 300;
+      const w = PAPER_W * widthScale(this.state.textScale);
       const step = n > 1 ? Math.min(230, (span - w) / (n - 1)) : 0;
       const x0 = 250 + (span - (w + step * (n - 1))) / 2;
       opts.forEach((o, i) => {
@@ -488,7 +533,7 @@ export class Game {
           const id = this.makePaper({ ...o, tema: job.exp.tema, opt: 'ABCD'[i] }, active, o);
           active.remaining.add(id);
           sound.play('slide');
-          this.moveAnimated(id, x0 + i * step, 70 + (i % 2) * 40 + rand(-8, 8));
+          this.placeNew(id, x0 + i * step + w / 2, 70 + (i % 2) * 40 + rand(-8, 8));
         });
       });
       if (this.firstDossier) {
@@ -505,7 +550,8 @@ export class Game {
 
   private bounce(id: number) {
     const p = this.paper(id)!;
-    this.moveAnimated(id, clamp(p.pose.x, 260, 760), clamp(p.pose.y, 40, 300));
+    const f = this.fitOnDesk(id, p.pose.x, p.pose.y);
+    this.moveAnimated(id, f.x, f.y);
   }
 
   private reject(id: number, msg: string) {
@@ -640,15 +686,25 @@ export class Game {
       sound.play('drop');
       return;
     }
+    const { w, h } = this.paperSize(paper.id);
     const note: Note = {
       key: ++this.uid,
       r: rand(-4, 4),
       text: claro,
-      left: paper.pose.x < 560 ? 282 : -222,
-      top: clamp(p.y - paper.pose.y - 40, 40, 160),
+      left: this.noteLeft(paper.pose.x, w),
+      top: clamp(p.y - paper.pose.y - 40, 40, Math.max(40, h - 200)),
     };
     this.patchPaper(paper.id, { note, z: ++this.zTop });
     sound.play('stick');
+  }
+
+  private noteLeft(x: number, w: number) {
+    const nw = NOTE_W * widthScale(this.state.textScale);
+    const right = w - 18;
+    const left = 14 - nw;
+    if (x + right + nw <= 1070) return right;
+    if (x + left >= 230) return left;
+    return x + w / 2 < 640 ? Math.min(right, 1070 - x - nw) : Math.max(left, 230 - x);
   }
 
   removeNote(id: number) {
@@ -815,6 +871,14 @@ export class Game {
   creditsBack() {
     if (this.creditsFromTitle) this.closePause();
     else this.showCredits(false);
+  }
+
+  setTextScale(v: number) {
+    const textScale = clamp(v, TEXT_SCALE.min, TEXT_SCALE.max);
+    this.set({ textScale });
+    try {
+      localStorage.setItem(TEXT_KEY, String(textScale));
+    } catch {}
   }
 
   setMuted(muted: boolean) {

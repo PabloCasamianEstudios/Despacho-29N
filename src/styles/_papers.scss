@@ -13,9 +13,9 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: 300px;
+  width: tw(300px);
   min-height: 360px;
-  padding: 16px 18px 40px;
+  padding: 16px 18px ts(40px);
   background: $cream-light;
   color: $ink;
   border: 1px solid #c9bb9d;
@@ -31,22 +31,23 @@
   &.anim { transition: transform .55s cubic-bezier(.2, .9, .3, 1), opacity .4s; }
   &.dossier { background-color: #efe3c4; }
 
-  h3 { font: 700 21px/1.15 $f; margin: 0 0 10px; }
-  p { font-size: 14px; line-height: 1.45; margin: 0; }
+  h3 { font: 700 ts(21px)/1.15 $f; margin: 0 0 ts(10px); }
+  p { font-size: ts(14px); line-height: 1.45; margin: 0; }
 }
 
 .p-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 11px;
+  gap: 10px;
+  font-size: ts(11px);
   letter-spacing: 1px;
   border-bottom: 2px solid $ink;
   padding-bottom: 6px;
 }
 
-.p-tema { border: 2px solid $ink; padding: 1px 6px; font-size: 11px; }
-.p-from { font-size: 11px; margin: 8px 0 10px; letter-spacing: .5px; }
+.p-tema { border: 2px solid $ink; padding: 1px 6px; font-size: ts(11px); text-align: right; }
+.p-from { font-size: ts(11px); margin: ts(8px) 0 ts(10px); letter-spacing: .5px; }
 .redact { background: #1b1714; color: transparent; padding: 0 4px; border-radius: 1px; }
 
 .p-foot {
@@ -54,7 +55,7 @@
   left: 18px;
   right: 18px;
   bottom: 12px;
-  font-size: 10px;
+  font-size: ts(10px);
   display: flex;
   justify-content: space-between;
   color: #5b5146;
@@ -66,7 +67,7 @@
   top: -14px;
   background: $tag;
   color: #fff;
-  font: 600 11px $f;
+  font: 600 ts(11px) $f;
   padding: 3px 8px;
   border-radius: 3px;
   letter-spacing: 1px;
@@ -96,12 +97,12 @@
 
 .explain {
   position: absolute;
-  width: 236px;
+  width: tw(236px);
   padding: 14px 14px 15px;
   background: #fff7a8;
   color: $ink;
   z-index: 5;
-  font: 14px/1.45 $f;
+  font: ts(14px)/1.45 $f;
   box-shadow: 0 8px 14px rgba(0, 0, 0, .35);
   cursor: pointer;
   animation: stick .3s cubic-bezier(.3, 1.5, .5, 1);
@@ -130,9 +131,9 @@
   padding: 10px 18px;
   border-radius: 6px;
   border: 2px solid $amber;
-  font: 400 15px/1.45 $f;
+  font: 400 ts(15px)/1.45 $f;
   letter-spacing: 0;
-  max-width: 640px;
+  max-width: tw(640px);
   text-align: center;
   transition: all .25s;
   pointer-events: none;

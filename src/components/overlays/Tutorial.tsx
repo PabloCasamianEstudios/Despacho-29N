@@ -3,15 +3,16 @@ import { DESK_TOP, STAGE_H, STAGE_W } from '../../game/constants';
 import { game, type Tutorial as TutorialState } from '../../game/engine';
 import type { Rect } from '../../game/types';
 import { useGame } from '../../hooks/useGame';
-import { clamp } from '../../game/util';
+import { cx } from '../../game/util';
+import { TextSizePicker } from './TextSize';
 
 interface Step {
   r?: Rect;
   t: ReactNode;
+  wide?: boolean;
 }
 
 const D = DESK_TOP;
-const BOX_W = 400;
 
 const box = (x: number, y: number, w: number, h: number, pad = 10): Rect => ({
   x: x - pad,
@@ -21,6 +22,15 @@ const box = (x: number, y: number, w: number, h: number, pad = 10): Rect => ({
 });
 
 const INTRO_STEPS: Step[] = [
+  {
+    wide: true,
+    t: (
+      <>
+        Antes de empezar: <b>ajusta el tamaño de la letra</b> para que leas bien los papeles.
+        <TextSizePicker />
+      </>
+    ),
+  },
   {
     t: (
       <>
@@ -136,20 +146,20 @@ const dossierSteps = (n: number, tema: string): Step[] => [
 
 const stepsFor = (t: TutorialState) => (t.kind === 'intro' ? INTRO_STEPS : dossierSteps(t.n, t.tema));
 
-function placeBox(r: Rect | undefined, bh: number) {
+function placeBox(r: Rect | undefined, bw: number, bh: number) {
   let x: number;
   let y: number;
   if (!r) {
-    x = STAGE_W / 2 - BOX_W / 2;
-    y = 300;
+    x = STAGE_W / 2 - bw / 2;
+    y = Math.min(300, (STAGE_H - bh) / 2);
   } else if (r.w > 700) {
-    x = STAGE_W / 2 - BOX_W / 2;
+    x = STAGE_W / 2 - bw / 2;
     y = STAGE_H - bh - 16;
   } else {
-    x = r.x + r.w / 2 < STAGE_W / 2 ? r.x + r.w + 24 : r.x - BOX_W - 24;
+    x = r.x + r.w / 2 < STAGE_W / 2 ? r.x + r.w + 24 : r.x - bw - 24;
     y = r.y < 60 ? r.y + r.h + 20 : r.y + r.h / 2 - bh / 2;
   }
-  return { left: clamp(x, 16, STAGE_W - BOX_W - 16), top: clamp(y, 16, STAGE_H - bh - 16) };
+  return { left: Math.max(16, Math.min(x, STAGE_W - bw - 16)), top: Math.max(16, Math.min(y, STAGE_H - bh - 16)) };
 }
 
 function TutorialCard({ t }: { t: TutorialState }) {
@@ -160,7 +170,13 @@ function TutorialCard({ t }: { t: TutorialState }) {
   const r = step.r ?? { x: STAGE_W / 2, y: 330, w: 0, h: 0 };
 
   useLayoutEffect(() => {
-    setPos(placeBox(step.r, boxRef.current?.offsetHeight || 150));
+    const el = boxRef.current;
+    if (!el) return;
+    const place = () => setPos(placeBox(step.r, el.offsetWidth || 400, el.offsetHeight || 150));
+    place();
+    const ro = new ResizeObserver(place);
+    ro.observe(el);
+    return () => ro.disconnect();
   }, [step]);
 
   const last = t.index === steps.length - 1;
@@ -176,7 +192,7 @@ function TutorialCard({ t }: { t: TutorialState }) {
           boxShadow: step.r ? undefined : '0 0 0 3000px rgba(8,6,4,.82)',
         }}
       />
-      <div id="tuto-box" ref={boxRef} style={pos ? { transform: `translate3d(${pos.left}px, ${pos.top}px, 0)` } : { visibility: 'hidden' }}>
+      <div id="tuto-box" ref={boxRef} className={cx(step.wide && 'wide')} style={pos ? { transform: `translate3d(${pos.left}px, ${pos.top}px, 0)` } : { visibility: 'hidden' }}>
         <div id="tuto-text">{step.t}</div>
         <div className="tuto-btns">
           <span />

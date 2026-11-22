@@ -44,7 +44,7 @@
 
 #tuto-box {
   position: absolute;
-  width: 400px;
+  width: tw(400px);
   background: $cream;
   color: $ink;
   padding: 18px 20px 14px;
@@ -62,7 +62,7 @@
     left: 16px;
     background: $tag;
     color: #fff;
-    font: 700 12px $f;
+    font: 700 ts(12px) $f;
     letter-spacing: 0;
     padding: 3px 8px;
     border-radius: 3px;
@@ -70,7 +70,7 @@
 }
 
 #tuto-text {
-  font: 18px/1.45 $f;
+  font: ts(18px)/1.45 $f;
   min-height: 52px;
 
   b { color: inherit; font-weight: 700; }
@@ -84,7 +84,7 @@
     border-bottom-width: 4px;
     border-radius: 6px;
     background: #fffaf0;
-    font: 600 17px $f;
+    font: 600 ts(17px) $f;
     text-align: center;
     color: $ink;
   }
@@ -97,7 +97,78 @@
   margin-top: 14px;
 }
 
-#tuto-next { padding: 10px 20px; font: 700 15px $f; letter-spacing: 0; }
+#tuto-next { padding: 10px 20px; font: 700 ts(15px) $f; letter-spacing: 0; }
+
+#tuto-box.wide { width: tw(560px); }
+
+.text-size {
+  margin-top: 14px;
+
+  .paper.sample {
+    position: relative;
+    width: 100%;
+    min-height: 0;
+    margin: 0 0 18px;
+    padding-bottom: 16px;
+    transform: rotate(-1deg);
+    cursor: default;
+  }
+}
+
+.size-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  .a { flex: none; font-weight: 700; line-height: 1; }
+  .a-s { font-size: 16px; }
+  .a-l { font-size: 32px; }
+}
+
+.size-range {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  touch-action: none;
+  cursor: pointer;
+
+  &::-webkit-slider-runnable-track { height: 10px; border-radius: 5px; background: #c9bb9d; }
+  &::-moz-range-track { height: 10px; border-radius: 5px; background: #c9bb9d; }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 38px;
+    height: 38px;
+    margin-top: -14px;
+    border: 4px solid $ink;
+    border-radius: 50%;
+    background: $amber;
+    box-shadow: 0 3px 0 $amber-dark;
+  }
+
+  &::-moz-range-thumb {
+    width: 30px;
+    height: 30px;
+    border: 4px solid $ink;
+    border-radius: 50%;
+    background: $amber;
+  }
+
+  &:focus-visible { outline: 3px solid $amber; outline-offset: 4px; border-radius: 6px; }
+}
+
+.pause-size {
+  width: 230px;
+  margin: 0 auto 16px;
+  text-align: left;
+
+  span { display: block; font: bold 18px $f; margin-bottom: 2px; }
+  .size-row { gap: 10px; }
+}
 
 #pause {
   position: absolute;

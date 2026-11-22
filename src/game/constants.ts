@@ -35,3 +35,5 @@ export const ZONES = {
 export const SHRED = { slotY: 180, mouthX: 1080, mouthTop: -44, width: 156 };
 
 export const DISCORD_URL = 'https://discord.gg/WwGSacHA8d';
+
+export const TEXT_SCALE = { min: 1, max: 2, step: 0.05 };

@@ -87,7 +87,7 @@ button { font-family: inherit; cursor: pointer; }
 
 .fine {
   font-family: $f;
-  font-size: 12px;
+  font-size: ts(12px);
   color: $muted;
   line-height: 1.5;
   max-width: 620px;
