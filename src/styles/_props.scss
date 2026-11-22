@@ -1,0 +1,137 @@
+@use "tokens" as *;
+
+#lamp {
+  position: absolute;
+  left: 950px;
+  top: -120px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 225, 150, .20), rgba(255, 225, 150, 0) 70%);
+  pointer-events: none;
+}
+
+#mug, #pen {
+  position: absolute;
+  left: 0;
+  top: 0;
+  cursor: grab;
+  touch-action: none;
+
+  &.dragging {
+    cursor: grabbing;
+    filter: drop-shadow(0 16px 10px rgba(0, 0, 0, .35));
+  }
+}
+
+#mug {
+  z-index: 37;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: #e9e4dc;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, .45), inset 0 0 0 5px #d3cdc2;
+
+  .coffee {
+    position: absolute;
+    inset: 9px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #8a5a30, #2a1508 75%);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, .6);
+  }
+
+  .mug-handle {
+    position: absolute;
+    right: -18px;
+    top: 24px;
+    width: 26px;
+    height: 26px;
+    border: 7px solid #e1dbd1;
+    border-left: none;
+    border-radius: 0 50% 50% 0;
+  }
+}
+
+#pen {
+  z-index: 36;
+  width: 150px;
+  height: 26px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 8px;
+    height: 9px;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #1e1e1e 0 80%, #c9a443 80% 84%, #1e1e1e 84%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, .5);
+  }
+}
+
+#lupa-spot {
+  position: absolute;
+  left: 700px;
+  top: 548px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 0, 0, .22), transparent 70%);
+  pointer-events: none;
+}
+
+#lupa {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 120px;
+  height: 120px;
+  z-index: 45;
+  cursor: grab;
+  touch-action: none;
+
+  .lens {
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, .75), rgba(200, 230, 255, .22) 35%, rgba(160, 200, 230, .12) 70%);
+    backdrop-filter: blur(.4px) brightness(1.08);
+  }
+
+  .rim {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    border: 7px solid #b8862e;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, .45), inset 0 0 0 2px #7d5a1c;
+  }
+
+  .handle {
+    position: absolute;
+    left: 70px;
+    top: 70px;
+    width: 52px;
+    height: 15px;
+    border-radius: 6px;
+    background: linear-gradient(180deg, #4a2f1c, #24160c);
+    transform: rotate(45deg);
+    transform-origin: 0 50%;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, .45);
+  }
+
+  &.dragging {
+    cursor: grabbing;
+    z-index: 210;
+
+    .rim { box-shadow: 0 22px 22px rgba(0, 0, 0, .4), inset 0 0 0 2px #7d5a1c; }
+  }
+
+  &.home { transition: transform .3s cubic-bezier(.3, 1.4, .5, 1); }
+}

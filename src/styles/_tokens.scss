@@ -1,0 +1,29 @@
+$f: "Zilla Slab", Georgia, serif;
+$f-logo: "Ultra", Georgia, serif;
+
+$amber: #e8b04a;
+$amber-dark: #8f6522;
+$cream: #efe6d2;
+$cream-light: #f3ead6;
+$newsprint: #ece4d0;
+$ink: #2b2520;
+$ink-deep: #1c1915;
+$night: #16120f;
+$button-dark: #2a221b;
+$muted: #9a8d78;
+$red: #b0251c;
+$green: #2e7a3a;
+$tag: #c47d2a;
+
+$glide: cubic-bezier(.25, .8, .3, 1);
+
+@mixin round-button {
+  border: none;
+  background: $button-dark;
+  color: $cream;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .45);
+  transition: filter .15s;
+  cursor: pointer;
+
+  &:hover { filter: brightness(1.25); }
+}

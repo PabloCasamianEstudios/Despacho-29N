@@ -1,0 +1,98 @@
+@use "tokens" as *;
+
+.tray { position: absolute; border-radius: 6px; }
+
+.tray-label {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 4px 10px 3px 14px;
+  text-align: center;
+  font: 600 15px $f;
+  letter-spacing: 4px;
+  color: #efe1c2;
+  background: #1b1511;
+  border: 1px solid #6b5538;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .6);
+}
+
+#inbox {
+  left: 18px;
+  top: 18px;
+  width: 200px;
+  height: 150px;
+  background: #3b3530;
+  border: 3px solid #26211d;
+  box-shadow: 0 6px 0 #1a1613, 0 10px 20px rgba(0, 0, 0, .4);
+
+  .tray-slot {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    top: 16px;
+    height: 16px;
+    background: #0d0b0a;
+    border-radius: 3px;
+    box-shadow: inset 0 3px 6px #000;
+  }
+
+  .tray-label { bottom: 12px; }
+}
+
+#inbox-stack {
+  position: absolute;
+  left: 30px;
+  right: 30px;
+  top: 46px;
+  height: 60px;
+
+  i {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: $cream;
+    border: 1px solid #a8987a;
+    border-radius: 1px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, .55);
+  }
+}
+
+#outbox {
+  left: 18px;
+  top: 470px;
+  width: 200px;
+  height: 190px;
+  background: #4a3a2a;
+  border: 3px solid #2b2016;
+  box-shadow: inset 0 10px 18px rgba(0, 0, 0, .45), 0 8px 18px rgba(0, 0, 0, .35);
+  transition: background .2s;
+
+  &.hot {
+    background: #5a4934;
+    box-shadow: inset 0 10px 18px rgba(0, 0, 0, .45), 0 0 0 4px $amber;
+  }
+}
+
+#outbox-stack {
+  position: absolute;
+  left: 26px;
+  right: 26px;
+  top: 26px;
+  bottom: 40px;
+
+  i {
+    position: absolute;
+    width: 130px;
+    height: 100px;
+    left: 8px;
+    background: $cream;
+    border: 1px solid #b4a689;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+  }
+}

@@ -1,0 +1,89 @@
+@use "tokens" as *;
+
+#calendar {
+  position: absolute;
+  left: 44px;
+  top: 214px;
+  width: 150px;
+  height: 176px;
+  transform: rotate(-4deg);
+  opacity: 0;
+  transition: opacity .4s;
+
+  &.on { opacity: 1; }
+
+  &.ready {
+    cursor: grab;
+
+    &:active { cursor: grabbing; }
+    .cal-page { animation: nudge 1.6s ease-in-out infinite; }
+  }
+}
+
+.cal-back {
+  position: absolute;
+  left: 6px;
+  right: -6px;
+  top: 16px;
+  bottom: -8px;
+  background: #d9cfb8;
+  border-radius: 3px;
+  box-shadow: 0 10px 16px rgba(0, 0, 0, .45), inset 0 -3px 0 #c4b99f, inset 0 -6px 0 #e6dcc6, inset 0 -9px 0 #cfc4ab;
+}
+
+.cal-rings {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 2px;
+  height: 22px;
+  display: flex;
+  justify-content: space-around;
+  padding: 0 18px;
+  z-index: 3;
+
+  i {
+    width: 10px;
+    height: 22px;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #6f6f6f, #d9d9d9 45%, #7a7a7a);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, .4);
+  }
+}
+
+.cal-page {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 12px;
+  bottom: 0;
+  background: #f6f0e2;
+  border-radius: 3px;
+  overflow: hidden;
+  text-align: center;
+  color: $ink;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, .25);
+  transform-origin: 50% 0;
+
+  .cal-mo { background: $red; color: #fff; font: 600 12px $f; letter-spacing: 3px; padding: 14px 0 5px; }
+  .cal-num { font: 400 60px/1.05 $f-logo; margin-top: 12px; }
+  .cal-wd { font: 600 13px $f; letter-spacing: 3px; text-transform: uppercase; }
+
+  &.tear { z-index: 4; animation: tear .75s cubic-bezier(.5, 0, .9, .6) forwards; }
+  &.pulling, &.flying { animation: none !important; }
+  &.pulling { box-shadow: 0 8px 14px rgba(0, 0, 0, .35); }
+  &.flying { z-index: 4; }
+}
+
+@keyframes tear {
+  0% { transform: rotate(0); }
+  25% { transform: rotate(-6deg) translate(-6px, 2px); }
+  100% { transform: rotate(-38deg) translate(-150px, 260px); opacity: 0; }
+}
+
+@keyframes nudge {
+  0%, 70%, 100% { transform: rotate(0); }
+  78% { transform: rotate(-3deg) translateY(2px); }
+  86% { transform: rotate(2deg); }
+  93% { transform: rotate(-1deg); }
+}
